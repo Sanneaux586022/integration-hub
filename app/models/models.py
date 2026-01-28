@@ -18,4 +18,5 @@ class ExchangeData(Base):
     base_currency = Column(String(3))
     target_currency = Column(String(3))
     rate = Column(Float)
-    tiemestamp = Column(DateTime(timezone=True), server_default=func.now())
+    timestamp = Column(DateTime(timezone=True), server_default=func.now())
+

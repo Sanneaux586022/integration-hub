@@ -1,8 +1,10 @@
-from fastapi import FastApi
+from fastapi import FastAPI
 from app.db.database import engine , Base
-import asyncio
+from app.api.routes import router as api_router
 
-app= FastApi(title="Integration Hub API")
+
+app= FastAPI(title="Integration Hub API")
+app.include_router(api_router, prefix="/api/v1")
 
 # Crea le tabelle all'avvio
 @app.on_event("startup")
