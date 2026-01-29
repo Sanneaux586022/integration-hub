@@ -6,6 +6,8 @@ services:
     container_name: integration-hub-app
     profiles: ["hub-app"]
     restart: always
+    environment:
+      - PYTHONUNBUFFERED=1
     volumes:
       - .:/app
     ports:

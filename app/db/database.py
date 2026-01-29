@@ -8,7 +8,7 @@ load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Creazione del motore asincrono
-engine = create_async_engine(DATABASE_URL, echo=True)
+engine = create_async_engine(DATABASE_URL, echo=True, pool_recycle=3600)
 
 # Sessione per le query
 AsyncSessionLocal = async_sessionmaker(bind=engine, expire_on_commit=False)

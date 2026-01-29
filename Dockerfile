@@ -13,12 +13,14 @@ RUN apt-get update && apt-get install -y \
 # Impostiamo la directory di lavoro
 WORKDIR /app
 
-# Upgrade pip
-RUN pip install --no-cache-dir --upgrade pip
-
 # Copiamo i requirements per sfruttare la cache di Docker
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Evita che Python generi file .pyc e forza l'output in tempo reale
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+RUN pip install --no-cache-dir --upgrade pip && \ 
+pip install --no-cache-dir -r requirements.txt
 
 # Copiamo tutto il contenuto del progetto nella cartella /app del container
 COPY . .
@@ -29,3 +31,4 @@ ENV PYTHONPATH=/app
 # Comando per avviare Uvicorn
 # Usiamo la forma 'app.main:app' assumendo che main.py sia dentro la cartella /app
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+# CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "reload-dir","app"]

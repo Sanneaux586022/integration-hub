@@ -3,7 +3,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.database import get_db
 from app.services.weather_service import weatherService
 from app.services.exchange_service import exchangeService
-import time
+from app.services.news_service import newsService
+from sqlalchemy import select
+from app.models.models import *
+# from app.models.models import WeatherData, ExchangeData, NewsArticle
 
 router = APIRouter()
 
@@ -23,10 +26,10 @@ async def update_weather(city : str, db: AsyncSession=Depends(get_db)):
             }
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Errore durante l'aggiornamento: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Errore durante l'aggiornamento della temperatura: {str(e)}")
 
 @router.get("/exchange/update/{base}/{target}")
-async def update_exchange(base: str , target: str, db: AsyncSession):
+async def update_exchange(base: str , target: str, db: AsyncSession=Depends(get_db)):
     service = exchangeService(db)
 
     try:
@@ -34,7 +37,7 @@ async def update_exchange(base: str , target: str, db: AsyncSession):
 
         return {
             "status": "success",
-            "message": f"Cambio {base}/{target} aggiornato.",
+            "message": f"Cambio {base.upper()}/{target.upper()} aggiornato.",
             "data": {
                 "id": exchange_record.id,
                 "rate": exchange_record.rate,
@@ -42,3 +45,44 @@ async def update_exchange(base: str , target: str, db: AsyncSession):
 
             }
         }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Errore durante l'aggiornamento del cambio: {str(e)}")
+    
+@router.get("/news/update/{topic}")
+async def update_news(topic: str, db: AsyncSession=Depends(get_db)):
+
+    service = newsService(db)
+
+    try:
+        articles = await service.fetch_and_save_news(topic)
+        
+        return {
+            "status": "success",
+            "count": len(articles),
+            "articles": [{"title": article.title, "source": article.source} for article in articles]
+        }
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+
+@router.get("/dashboard")
+async def get_dashboard(db: AsyncSession=Depends(get_db)):
+    # 1.Recuperiamo l'ultimo meteo
+    weather_query = await db.execute(select(WeatherData).order_by(WeatherData.timestamp.desc()).limit(1))
+    latest_weather = weather_query.scalar_one_or_none()
+
+    # 2.Recuperiamo l'ultimo cambio EUR/USD
+    exchange_query = (await db.execute(select(ExchangeData).filter_by(target_currency="USD")
+                                       .order_by(ExchangeData.timestamp.desc()).limit(1)))
+    latest_exchange = exchange_query.scalar_one_or_none()
+
+    # 3.Recuperiamo le ultime 3 notizie
+    news_query = await db.execute(select(NewsArticle).order_by(NewsArticle.timestamp.desc()).limit(3))
+    latest_news = news_query.scalars().all()
+
+    return {
+        "weather": latest_weather,
+        "exchange": latest_exchange,
+        "news": latest_news
+    }
