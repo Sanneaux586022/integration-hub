@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+sqlalchemy[asyncio]
+aiomysql
+httpx
+python-dotenv
+pydantic
+pydantic-settings
+apscheduler
+jinja2
