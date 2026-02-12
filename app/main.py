@@ -12,7 +12,7 @@ from datetime import datetime
 
 
 app= FastAPI(title="Integration Hub API")
-app.mount("/static", StaticFiles(directory="static", name="static"))
+app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(api_router, prefix="/api/v1")
 templates =  Jinja2Templates(directory="templates")
 
