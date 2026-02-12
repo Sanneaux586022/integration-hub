@@ -6,10 +6,13 @@ from app.api.routes import router as api_router
 from app.core.scheduler import scheduler
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.database import get_db
+from fastapi.staticfiles import StaticFiles
 from datetime import datetime
 
 
+
 app= FastAPI(title="Integration Hub API")
+app.mount("/static", StaticFiles(directory="static", name="static"))
 app.include_router(api_router, prefix="/api/v1")
 templates =  Jinja2Templates(directory="templates")
 

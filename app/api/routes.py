@@ -86,3 +86,16 @@ async def get_dashboard(db: AsyncSession=Depends(get_db)):
         "exchange": latest_exchange,
         "news": latest_news
     }
+
+@router.get("/weather/history")
+async def last_24_hours_temperatures(db: AsyncSession=Depends(get_db)):
+    weather_query = await db.execute(select(WeatherData).order_by(WeatherData.timestamp).limit(24))
+    history = weather_query.scalars().all()
+
+    history.reverse()
+
+    return [
+
+        {"time": h.timestamp.strftime("%H:%M"), "temp": h.temperature}
+        for h in history
+    ]

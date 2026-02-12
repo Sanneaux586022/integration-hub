@@ -12,7 +12,7 @@ async def scheduled_update():
         try:
             # 2. Aggiorna il meteo
             weather = weatherService(db)
-            await weather.get_and_save_weather("Milano")
+            await weather.get_and_save_weather("Verona")
 
             # 2. Aggiorna Cambi
             exchange = exchangeService(db)
