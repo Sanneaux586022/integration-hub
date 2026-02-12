@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/css/login_reg.css">
+    <script src="/static/js/register.js"></script>
+</head>
+<body>
+    <header></header>
+    <main class="contenitore">
+        <section class="login-group">
+            <form action="#" class="card" id="registerForm">
+                <div class="card-header">
+                    <h2>Registrati</h2>
+                </div>
+               
+                <div class="input-group">
+                    <label for="email">Email:</label>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        id="email"
+                        autocomplete="email"
+                        placeholder="Email"                  
+                        required>
+                </div>
+
+                <div class="input-group">
+                    <label for="username">username:</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        placeholder="username" 
+                        name="username" 
+                        autocomplete="username"
+                        required>                    
+                </div>
+                <div class="input-group">
+                    <label for="password">password:</label>
+                    <div class="password-wrapper">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            placeholder="password" 
+                            name="password" 
+                            autocomplete="new-password"
+                            required>
+                        <span id="togglePassword">
+                        👁️
+                        </span> 
+                    </div>
+                   
+                </div>
+                <div class="input-group">
+                    <label for="new-password"> Conferma password:</label>
+                    <div class="password-wrapper">
+                        <input 
+                            type="password" 
+                            id="new-password" 
+                            placeholder="Conferma password" 
+                            name="new-password" 
+                            autocomplete="new-password"
+                            required>
+                        <span id="toggleConfirmPassword">
+                        👁️
+                        </span> 
+                    </div>
+                    <span id="password-error" style="color: red; font-size: 0.8rem; display: none;">
+                        Le password non corrispondono
+                    </span>
+                   
+                </div>                
+
+                <button class="card-btn" type="submit">Crea Account</button>
+                <p>
+                    Hai gia un account? <a href="./login.html" class="card-link">Accedi</a>
+                </p>
+            </form>
+        </section>
+        <section class="image-section">
+            <div class="bigcard">
+                <figure>
+                    <img src="/static/images/logofinaleSanneaux.png" alt="Il mio logo personale" title="logo personale">
+                </figure>
+            </div>
+        </section>        
+    </main>
+<footer class="brand-green"> &copy; 2026 By S'anneaux</footer>
+    
+</body>
+</html>

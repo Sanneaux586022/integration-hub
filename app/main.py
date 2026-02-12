@@ -46,3 +46,22 @@ async def gui_dashboard(request: Request, db: AsyncSession = Depends(get_db)):
         "data": dashboard_data,
         "now": datetime.now()
     })
+
+@app.get("/login", response_class=HTMLResponse)
+async def get_login(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+
+@app.get("/register", response_class=HTMLResponse)
+async def get_register_page(request: Request):
+    return templates.TemplateResponse("register.html", {"request": request})
+
+@app.get("/dashboard", response_class=HTMLResponse)
+async def get_dashboard_page(request: Request, db: AsyncSession = Depends(get_db)):
+    from app.api.routes import get_dashboard
+    dashboard_data = await get_dashboard(db)
+    # return templates.TemplateResponse("dashboard.html", {"request": request})
+    return templates.TemplateResponse("dashboard.html", {
+        "request": request,
+        "data": dashboard_data,
+        "now": datetime.now()
+    })

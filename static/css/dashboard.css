@@ -1,0 +1,530 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.rem;
+}
+
+.main-navbar {
+    width: 100%;
+    background: white;
+    align-items: center;
+    position: sticky;
+    color: #333;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.41);
+    border-bottom: 4px solid rgb(2, 116, 11);
+}
+
+.nav-container {
+    max-width: 1000px;
+    margin: 0 auto;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px
+}
+
+.nav-user {
+    display: flex;
+    justify-content: center;
+}
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 10rem;
+}
+
+.nav-logo {
+    display: flex;
+    flex-direction: column; /* Mette il testo sotto l'immagine */
+    align-items: center;    /* Centra tutto perfettamente */
+    text-align: center;
+}
+
+.nav-logo img {
+    height: 65px; /* La tua misura */
+    width: auto;
+    margin-bottom: 5px; /* Un po' di spazio tra logo e testo */
+
+    filter: drop-shadow(0 0 8px rgba(2, 116, 11, 0.3));
+    transition: 0.3s;
+}
+
+.nav-logo:hover img {
+    filter: drop-shadow(0 0 12px rgba(2, 116, 11, 0.6));
+    transform: scale(1.05);
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    line-height: 1.2;    
+}
+
+/* I tuoi colori S'anneaux */
+.brand-green {
+    color: rgb(2, 116, 11);
+}
+
+.brand-blue {
+    color: #0044ff;
+}
+
+.brand-gray {
+    color: #888;
+    font-style: italic;
+    font-size: 0.85rem;
+}
+
+.nav-links a:hover {
+    color: rgb(2, 116, 11);
+}
+
+.nav-links a {
+    text-decoration: none; 
+    color: #333;           
+    font-weight: 500;      
+    transition: 0.3s
+}
+.nav-user {
+    display: flex;
+    justify-content: center;
+}
+
+.logout-btn {
+    background:  rgb(2, 116, 11); 
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+
+.dashboard-content {
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center; /* Centra tutto orizzontalmente */
+    text-align: center;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.hero-content h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 10px;
+    
+}
+
+/* Usiamo il tuo verde per il nome dell'utente */
+.highlight {
+    color: rgb(2, 116, 11);
+    position: relative;
+    display: inline-block;
+}
+
+.highlight::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background: rgba(2, 116, 11, 0.2); /* Verde molto trasparente */
+    bottom: 5px;
+    left: 0;
+    z-index: -1; /* Sta dietro al testo */
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+/* Bottoni rapidi */
+.action-btn {
+    background: rgb(2, 116, 11);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s, background 0.3s;
+    margin-top: 10px;
+}
+
+.action-btn:hover {
+    transform: translateY(-3px); /* Effetto "salto" al passaggio del mouse */
+    background: #015a08;
+}
+
+.action-btn.secondary {
+    background: #0044ff; /* Il blu del tuo logo */
+    margin-left: 10px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-content {
+    animation: fadeIn 0.8s ease-out;
+}
+
+.projects-content {
+    width: 100%;
+    background: white;
+    align-items: center;
+}
+
+.projects-section {
+    max-width: 1000px;
+    margin: auto;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.controls-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.search-container {
+    flex: 1;
+    display: flex;
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    border: 2px solid #eee;
+    border-radius: 25px;
+    background: white; 
+    transition: 0.3s;
+}
+
+.search-container:focus-within {
+    border-color: rgb(2, 116, 11);
+    box-shadow: 0 4px 10px rgba(1, 116, 11, 0.1)
+}
+
+.search-container input {
+    flex: 1;
+    padding: 12px 15px;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 1rem;
+    color: #333;
+}
+
+.search-btn {
+    background: transparent;
+    border: none;
+    padding-left: 20px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    color: #666;
+    border-right: 1px solid #eee;
+    margin-right: 5px;
+}
+
+.search-btn :hover {
+    color: rgb(2, 116, 11);
+    transform: scale(1.2);
+}
+.search-btn:active{
+    transform: scale(0.9);
+}
+
+.search-container input:focus {
+    border-color: rgb(2, 116, 11);
+    box-shadow: 0 4px 10px rgba(1, 116, 11, 0.1);
+}
+
+.btn-new-project {
+    background: rgb(2, 116, 11);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(2, 116, 11, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-new-project:hover {
+    background: #015a08;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(2, 116, 11, 0.3);
+}
+
+.btn-new-project span {
+    font-size: 1.2rem;
+}
+
+/* RESPONSIVE: Su mobile li mettiamo uno sopra l'altro */
+@media (max-width: 600px) {
+    .controls-wrapper {
+        flex-direction: column;
+    }
+    .btn-new-project {
+        width: 100%; 
+        justify-content: center;
+    }
+}
+
+.dashboard-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.dashboard-grid .card {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 calc(33.333% - 1rem);
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s;
+    position: relative;
+}
+
+.card .main-link::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+.card h3 {
+    font-size: 1.1rem;
+    line-height: 1.3;
+    color: #222;
+}
+.card p {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.5;
+    flex-grow: 1;
+}
+.card a {
+    text-decoration: none;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(2, 116, 11, 0.2);
+    border-color: rgb(2, 116, 11);
+}
+
+.card:active {
+    transform: translateY(-2px); 
+}
+
+footer{
+    text-align: center;
+    color: #888;
+    font-size: larger;
+    background: #f5f5f5;
+}
+footer a {
+    color: #6f4e37; 
+    text-decoration: none;
+    color: rgb(2, 116, 11);
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* --- TABLET (Schermi sotto i 768px) --- */
+@media (max-width: 768px) {
+    
+    /* 1. Le Card: passiamo da 3 a 2 per riga */
+    .dashboard-grid .card {
+        flex: 1 1 calc(50% - 1.5rem); 
+    }
+
+    /* 2. Il Benvenuto: riduciamo la dimensione del font */
+    .hero-content h1 {
+        font-size: 1.8rem;
+    }
+}
+
+/* --- SMARTPHONE (Schermi sotto i 480px) --- */
+@media (max-width: 480px) {
+    
+    /* 1. Navbar: mettiamo logo e tasto "Esci" in colonna o riduciamo il padding */
+    .nav-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .nav-links {
+        gap: 10px;
+        font-size: 0.8rem; /* Link più piccoli per farli stare in riga */
+    }
+
+    /* 2. Le Card: OGNI card occupa tutta la riga (100%) */
+    .dashboard-grid .card {
+        flex: 1 1 100%;
+    }
+    
+    /* 3. Padding: riduciamo i margini laterali per guadagnare spazio */
+    .projects-section {
+        padding: 10px;
+    }
+}
+
+/* Sfondo oscurato */
+.modal-overlay {
+    display: none; /* Nascosto di base */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Effetto vetro scuro */
+    backdrop-filter: blur(5px);   /* Sfoca il retro per focus */
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Finestra bianca */
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: modalSlideUp 0.3s ease-out;
+}
+
+@keyframes modalSlideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Stile Form */
+.form-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+}
+
+/* Pulsanti nel modale */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+.btn-confirm {
+    background: rgb(2, 116, 11);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-cancel {
+    background: #eee;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #333;
+}
+
+.close-modal {
+    background: #f5f5f5; /* Grigio chiarissimo di base */
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%; /* La rendiamo tonda */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #888;
+    transition: all 0.2s ease;
+    padding-bottom: 4px; /* Piccolo aggiustamento per centrare la X */
+}
+
+.close-modal:hover {
+    background: #e0e0e0; /* Si scurisce al passaggio */
+    color: #333;         /* La X diventa più scura */
+    transform: rotate(90deg); /* Ruota leggermente: tocco di classe! */
+}

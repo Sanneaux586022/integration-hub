@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/css/login_reg.css">
+    <script src="static/js/login.js"></script>
+</head>
+<body>
+    <main class="contenitore">
+        <section class="login-group">
+            <form action="#" class="card" id="loginForm">
+                <div class="card-header">
+                    <img src="/static/images/saitama_project.png" alt="saitama" class="saitama-logo"
+                    title="immagine di saitama che stringe il pugno">
+                    <h2>Accedi Alla Tua <br><span>Area Personale</span></h2>
+                </div>
+                <div class="input-group">
+                    <label for="username">username:</label>
+                    <input 
+                    type="text" 
+                    id="username" 
+                    placeholder="username" 
+                    name="username" 
+                    autocomplete="username"
+                    required>                    
+                </div>
+                <div class="input-group">
+                    <label for="password">password:</label>
+                    <div class="password-wrapper">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            placeholder="password" 
+                            name="password" 
+                            autocomplete="current-password"
+                            required>
+                        <span id="togglePassword">
+                        👁️
+                        </span> 
+                    </div>
+                   
+                </div>
+
+                <button class="card-btn" type="submit">Accedi</button>
+                <!-- <a href="#" class="card-link">Recupera le tue credenziali</a> -->
+                <div class="card-footer">
+                    <a href="#" class="card-link">Recupera le tue credenziali</a>
+                    <p class="register-link">
+                        Non hai un account? <a href="">Registrati ora</a>
+                    </p>
+                </div>
+            </form>            
+        </section>
+        <section class="image-section">
+            <div class="bigcard">
+                <figure>
+                    <img src="static/images/logofinaleSanneaux.png" alt="Il mio logo personale" title="logo personale">
+                </figure>
+            </div>
+        </section>
+
+    </main>
+    <footer class="brand-green"> &copy; 2026 By S'anneaux  | <a href="#">Privacy Policy</a></footer>    
+</body>
+</html>

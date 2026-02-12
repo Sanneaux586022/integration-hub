@@ -62,4 +62,79 @@ async function refreshData(endpoint, buttonId){
 
 }
 
-document.addEventListener("DOMContentLoaded", loadChart, );
+document.addEventListener('DOMContentLoaded', () => {
+    loadChart();
+    // --- 1. SELEZIONE ELEMENTI ---
+    const modal = document.getElementById('projectModal');
+    const openBtn = document.getElementById('openModal'); // Il tasto accanto alla ricerca
+    const closeBtn = document.getElementById('closeBtn');
+    const closeIcon = document.querySelector('.close-modal');
+    const projectForm = document.getElementById('projectForm');
+    
+    const searchInput = document.getElementById('search');
+    const projectCards = document.querySelectorAll('.card');
+
+    // --- 2. GESTIONE MODALE (Apertura/Chiusura) ---
+    if (openBtn && modal) {
+        openBtn.onclick = () => {
+            modal.style.display = 'flex';
+        };
+
+        const closeModal = () => {
+            modal.style.display = 'none';
+        };
+
+        if (closeBtn) closeBtn.onclick = closeModal;
+        if (closeIcon) closeIcon.onclick = closeModal;
+
+        // Chiudi se clicchi fuori dal rettangolo bianco
+        window.onclick = (event) => {
+            if (event.target == modal) closeModal();
+        };
+    }
+
+    // --- 3. LOGICA DI RICERCA (Filtro Card) ---
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            const searchText = searchInput.value.toLowerCase();
+
+            projectCards.forEach(card => {
+                // Cerchiamo il testo dentro l'H3 della card
+                const title = card.querySelector('h3').innerText.toLowerCase();
+                
+                if (title.includes(searchText)) {
+                    card.style.display = "block"; // Mostra
+                } else {
+                    card.style.display = "none";  // Nascondi
+                }
+            });
+        });
+    }
+
+    // --- 4. INVIO FORM (Verso il Raspberry) ---
+    if (projectForm) {
+        projectForm.onsubmit = (e) => {
+            e.preventDefault();
+
+            // Recupero valori dal form
+            const payload = {
+                projectName: document.getElementById('projectName').value,
+                technology: document.getElementById('techStack').value,
+                extraParams: document.getElementById('extraParams').value,
+                timestamp: new Date().toISOString(),
+                owner: localStorage.getItem('currentUser') || 'S\'anneaux'
+            };
+
+            console.log("🚀 Payload pronto per il Raspberry:", payload);
+            
+            // FEEDBACK UTENTE
+            alert(`Avvio automazione per il progetto: ${payload.projectName}\nTecnologia: ${payload.technology}`);
+
+            // TODO: Qui inseriremo la chiamata fetch() reale domani
+            // fetch('http://IP_RASPBERRY:5000/api/create-project', { method: 'POST', body: JSON.stringify(payload) })
+
+            projectForm.reset(); // Svuota il form
+            modal.style.display = 'none'; // Chiudi il modale
+        };
+    }
+});
