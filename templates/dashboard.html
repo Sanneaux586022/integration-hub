@@ -29,6 +29,73 @@
             </div>            
         </div>
     </header>
+    <!-- <aside class="sidebar-mini">
+        <div class="sidebar-content">
+            <div class="sidebar-item" title="Status Sistema">
+                <span class="icon">🖥️</span>
+                <span class="detail text-success">
+                    {{data.system.status}}
+                </span>
+            </div>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-item {%if data.system.cpu_temp > 60 %}danger{% endif %}" title="Temperatura CPU">
+                <span class="icon">🌡️</span>
+                <span class="detail">
+                    {{data.system.cpu_temp}} °C
+                </span>
+            </div>
+            <div class="sidebar-item" title="Utilizzo RAM">
+                <span class="icon">📊</span>
+                <span class="detail">
+                    {{data.system.ram_usage}} %S
+                </span>
+            </div>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-item" title="Impostazioni">
+                <span class="icon">⚙️</span>
+                <span class="detail">Settings</span>
+            </div>
+        </div>
+    </aside> -->
+    <aside class="sidebar-mini">
+        <div class="sidebar-content">
+            <div class="sidebar-item" title="Status Sistema">
+                <span class="icon">🖥️</span>
+                <div class="sidebar-label">
+                    <small>SYSTEM</small>
+                    <span class="text-success">{{ data.system.status }}</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-divider"></div>
+
+            <div class="sidebar-item {% if data.system.cpu_temp != 'N/A' and data.system.cpu_temp > 60 %}danger{% endif %}" title="Temperatura CPU">
+                <span class="icon">🌡️</span>
+                <div class="sidebar-label">
+                    <small>CPU TEMP</small>
+                    <span>{{ data.system.cpu_temp }}°C</span>
+                </div>
+            </div>
+
+            <div class="sidebar-item" title="Utilizzo RAM">
+                <span class="icon">📊</span>
+                <div class="sidebar-label">
+                    <small>RAM USAGE</small>
+                    <span>{{ data.system.ram_usage }}%</span>
+                </div>
+            </div>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="sidebar-item" title="Sistema Operativo">
+                <span class="icon">⚡</span>
+                <div class="sidebar-label">
+                    <small>OS</small>
+                    <span>DietPi</span>
+                </div>
+            </div>
+        </div>
+    </aside>
     <main class="dashboard-content">
         <section class="hero-content">
             <h1>Benvenuto, <span class="brand-green highlight">Sanneaux</span>!</h1>

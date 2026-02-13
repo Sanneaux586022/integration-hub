@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.database import get_db
 from fastapi.staticfiles import StaticFiles
 from datetime import datetime
+from app.services.system_service import sytemService
 
 
 
@@ -59,9 +60,14 @@ async def get_register_page(request: Request):
 async def get_dashboard_page(request: Request, db: AsyncSession = Depends(get_db)):
     from app.api.routes import get_dashboard
     dashboard_data = await get_dashboard(db)
+
+    system_stats = sytemService.get_syst_stats()
+
+    full_data = dashboard_data
+    full_data["system"] = system_stats
     # return templates.TemplateResponse("dashboard.html", {"request": request})
     return templates.TemplateResponse("dashboard.html", {
         "request": request,
-        "data": dashboard_data,
+        "data": full_data,
         "now": datetime.now()
     })

@@ -71,7 +71,7 @@ body {
     font-size: 0.85rem;
     text-transform: uppercase;
     font-weight: bold;
-    line-height: 1.2;    
+    line-height: 1.2;
 }
 
 /* I tuoi colori S'anneaux */
@@ -94,9 +94,9 @@ body {
 }
 
 .nav-links a {
-    text-decoration: none; 
-    color: #333;           
-    font-weight: 500;      
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
     transition: 0.3s
 }
 .nav-user {
@@ -105,7 +105,7 @@ body {
 }
 
 .logout-btn {
-    background:  rgb(2, 116, 11); 
+    background:  rgb(2, 116, 11);
     color: white;
     border: none;
     padding: 8px 15px;
@@ -113,19 +113,21 @@ body {
 }
 
 .dashboard-content {
+    margin-left: 100px;
     padding: 40px 20px;
     display: flex;
-    justify-content: center; /* Centra tutto orizzontalmente */
+    justify-content: center;
     text-align: center;
     flex-direction: column;
     gap: 2rem;
+    transition: margin-left o.4s ease;
 }
 
 .hero-content h1 {
     font-size: 2.5rem;
     color: #333;
     margin-bottom: 10px;
-    
+
 }
 
 /* Usiamo il tuo verde per il nome dell'utente */
@@ -219,7 +221,7 @@ body {
     align-items: center;
     border: 2px solid #eee;
     border-radius: 25px;
-    background: white; 
+    background: white;
     transition: 0.3s;
 }
 
@@ -298,7 +300,7 @@ body {
         flex-direction: column;
     }
     .btn-new-project {
-        width: 100%; 
+        width: 100%;
         justify-content: center;
     }
 }
@@ -357,7 +359,7 @@ body {
 }
 
 .card:active {
-    transform: translateY(-2px); 
+    transform: translateY(-2px);
 }
 
 footer{
@@ -367,7 +369,7 @@ footer{
     background: #f5f5f5;
 }
 footer a {
-    color: #6f4e37; 
+    color: #6f4e37;
     text-decoration: none;
     color: rgb(2, 116, 11);
 }
@@ -378,10 +380,10 @@ footer a:hover {
 
 /* --- TABLET (Schermi sotto i 768px) --- */
 @media (max-width: 768px) {
-    
+
     /* 1. Le Card: passiamo da 3 a 2 per riga */
     .dashboard-grid .card {
-        flex: 1 1 calc(50% - 1.5rem); 
+        flex: 1 1 calc(50% - 1.5rem);
     }
 
     /* 2. Il Benvenuto: riduciamo la dimensione del font */
@@ -392,7 +394,7 @@ footer a:hover {
 
 /* --- SMARTPHONE (Schermi sotto i 480px) --- */
 @media (max-width: 480px) {
-    
+
     /* 1. Navbar: mettiamo logo e tasto "Esci" in colonna o riduciamo il padding */
     .nav-container {
         flex-direction: column;
@@ -408,7 +410,7 @@ footer a:hover {
     .dashboard-grid .card {
         flex: 1 1 100%;
     }
-    
+
     /* 3. Padding: riduciamo i margini laterali per guadagnare spazio */
     .projects-section {
         padding: 10px;
@@ -527,4 +529,101 @@ footer a:hover {
     background: #e0e0e0; /* Si scurisce al passaggio */
     color: #333;         /* La X diventa più scura */
     transform: rotate(90deg); /* Ruota leggermente: tocco di classe! */
+}
+
+/* --- SIDEBAR A CAPSULA DEFINITIVA --- */
+.sidebar-mini {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%); 
+    height: auto;
+    width: 65px; /* Larghezza da chiusa */
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0; /* Padding solo verticale */
+    transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+    z-index: 999;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden; 
+}
+
+.sidebar-mini:hover {
+    width: 180px;
+    border-radius: 20px;
+}
+
+/* Reset del contenitore interno per evitare spostamenti */
+.sidebar-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Fondamentale per l'espansione */
+}
+
+.sidebar-item {
+    width: 180px; /* Larghezza massima */
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    position: relative;
+}
+
+/* CENTRATURA MILLIMETRICA DELL'ICONA */
+.sidebar-item .icon {
+    width: 65px; /* Esattamente come la sidebar chiusa */
+    min-width: 65px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+}
+
+.sidebar-label {
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease;
+    white-space: nowrap;
+    padding-left: 5px;
+}
+
+.sidebar-mini:hover .sidebar-label {
+    opacity: 1;
+    visibility: visible;
+}
+
+.sidebar-label small {
+    font-size: 0.6rem;
+    font-weight: bold;
+    color: #888;
+}
+
+.sidebar-divider {
+    width: 30px;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.1);
+    margin: 10px auto; /* Centra il divisore nella barra chiusa */
+    transition: width 0.3s;
+}
+
+.sidebar-mini:hover .sidebar-divider {
+    width: 130px;
+}
+
+/* ADATTAMENTO DASHBOARD */
+.dashboard-content {
+    margin-left: 100px;
+    transition: margin-left 0.4s ease;
 }

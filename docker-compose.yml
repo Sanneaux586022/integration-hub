@@ -8,8 +8,10 @@ services:
     restart: always
     environment:
       - PYTHONUNBUFFERED=1
+    privileged: true
     volumes:
       - .:/app
+      - /sys/:/sys:ro
     ports:
       - "8090:8000"
     env_file:
