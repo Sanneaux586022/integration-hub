@@ -11,7 +11,6 @@ from datetime import datetime
 from app.services.system_service import sytemService
 
 
-
 app= FastAPI(title="Integration Hub API")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(api_router, prefix="/api/v1")
@@ -71,3 +70,4 @@ async def get_dashboard_page(request: Request, db: AsyncSession = Depends(get_db
         "data": full_data,
         "now": datetime.now()
     })
+

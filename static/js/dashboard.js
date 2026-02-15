@@ -33,6 +33,7 @@ async function loadChart() {
         console.error("Error nel caricamento del grafico: ", error);
     }
 }
+
 async function refreshData(endpoint, buttonId){
     const btn = document.getElementById(buttonId);
 
@@ -62,6 +63,32 @@ async function refreshData(endpoint, buttonId){
 
 }
 
+async function updateSystemStats() {
+    try {
+        response = await fetch('/api/v1/system-stats');
+
+        if (response.ok) {
+            const data = await response.json();
+            const tempElement = document.querySelector('.sidebar-item[title="Temperatura CPU"] span:last-child');
+            const ramElement = document.querySelector('.sidebar-item[title="Utilizzo RAM"] span:last-child');
+            if (tempElement) {
+                tempElement.innerText = `${data.cpu_temp} °C`;
+            }
+            if (ramElement){
+                ramElement.innerText = `${data.ram_usage}`
+            }
+            console.log("Stat aggiornate: ", data);
+            if (data.cpu_temp > 60){
+                tempElement.parentElement.parentElement.classList.add('danger');
+            } else {
+                tempElement.parentElement.parentElement.classList.remove('danger');
+            }
+        }
+    } catch (error) {
+        console.error("Errore durante l'aggiornamento");
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     loadChart();
     // --- 1. SELEZIONE ELEMENTI ---
@@ -72,7 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectForm = document.getElementById('projectForm');
     
     const searchInput = document.getElementById('search');
-    const projectCards = document.querySelectorAll('.card');
+    const projectCards = document.querySelectorAll('.section-card');
+    console.log(projectCards);
 
     // --- 2. GESTIONE MODALE (Apertura/Chiusura) ---
     if (openBtn && modal) {
@@ -137,4 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.style.display = 'none'; // Chiudi il modale
         };
     }
+
+    updateSystemStats();
+    setInterval(updateSystemStats, 15000);
 });

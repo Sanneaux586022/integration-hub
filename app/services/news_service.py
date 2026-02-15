@@ -1,7 +1,7 @@
 import httpx
 import os
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.models.models import NewsArticle
+from app.models.newsArticle import NewsArticle
 from datetime import datetime
 
 class newsService:
@@ -11,14 +11,10 @@ class newsService:
         self.base_url = "https://newsapi.org/v2/everything"
         self.db = db_session
 
-    # async def fetch_and_save_news(self, country: str):
+
     async def fetch_and_save_news(self, query: str):
 
         async with httpx.AsyncClient() as client:
-            # response = await client.get(
-            #     self.base_url,
-            #     params={"country": country, "apikey": self.api_key}
-            # )
             response = await client.get(
                 self.base_url,
                 params={

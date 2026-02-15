@@ -1,7 +1,7 @@
 import httpx
 import os
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.models.models import ExchangeData
+from app.models.exchangeData import ExchangeData
 
 class exchangeService:
     def __init__(self, db_session: AsyncSession):

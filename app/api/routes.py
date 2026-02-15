@@ -4,9 +4,12 @@ from app.db.database import get_db
 from app.services.weather_service import weatherService
 from app.services.exchange_service import exchangeService
 from app.services.news_service import newsService
+from app.services.system_service import sytemService
 from sqlalchemy import select
-from app.models.models import *
-# from app.models.models import WeatherData, ExchangeData, NewsArticle
+from app.models.exchangeData import ExchangeData
+from app.models.newsArticle import NewsArticle
+from app.models.weatherData import WeatherData
+from zoneinfo import ZoneInfo
 
 router = APIRouter()
 
@@ -89,13 +92,18 @@ async def get_dashboard(db: AsyncSession=Depends(get_db)):
 
 @router.get("/weather/history")
 async def last_24_hours_temperatures(db: AsyncSession=Depends(get_db)):
-    weather_query = await db.execute(select(WeatherData).order_by(WeatherData.timestamp).limit(24))
+    weather_query = await db.execute(select(WeatherData).order_by(WeatherData.timestamp.desc()).limit(24))
     history = weather_query.scalars().all()
 
     history.reverse()
 
     return [
 
-        {"time": h.timestamp.strftime("%H:%M"), "temp": h.temperature}
+        {"time": h.timestamp.astimezone(ZoneInfo("Europe/Rome")).strftime("%H:%M"), "temp": h.temperature}
         for h in history
     ]
+
+@router.get("/system-stats")
+async def get_stats():  
+    stats = sytemService.get_syst_stats()
+    return stats

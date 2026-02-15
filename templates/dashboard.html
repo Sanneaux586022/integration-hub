@@ -29,34 +29,6 @@
             </div>            
         </div>
     </header>
-    <!-- <aside class="sidebar-mini">
-        <div class="sidebar-content">
-            <div class="sidebar-item" title="Status Sistema">
-                <span class="icon">🖥️</span>
-                <span class="detail text-success">
-                    {{data.system.status}}
-                </span>
-            </div>
-            <div class="sidebar-divider"></div>
-            <div class="sidebar-item {%if data.system.cpu_temp > 60 %}danger{% endif %}" title="Temperatura CPU">
-                <span class="icon">🌡️</span>
-                <span class="detail">
-                    {{data.system.cpu_temp}} °C
-                </span>
-            </div>
-            <div class="sidebar-item" title="Utilizzo RAM">
-                <span class="icon">📊</span>
-                <span class="detail">
-                    {{data.system.ram_usage}} %S
-                </span>
-            </div>
-            <div class="sidebar-divider"></div>
-            <div class="sidebar-item" title="Impostazioni">
-                <span class="icon">⚙️</span>
-                <span class="detail">Settings</span>
-            </div>
-        </div>
-    </aside> -->
     <aside class="sidebar-mini">
         <div class="sidebar-content">
             <div class="sidebar-item" title="Status Sistema">
@@ -104,7 +76,6 @@
                 <button class="action-btn secondary">Esplora</button>
             </div>
         </section>
-        <!-- <hr> -->
         <section class="projects-content">
             <div class="projects-section">
                 <h2>I Miei Progetti</h2>
@@ -118,58 +89,80 @@
                         Nuovo Progetto <span>+</span>
                     </button>
                 </div>
-                <div class="dashboard-grid">
-                    <div class="card">
-                        <div class="d-flex justify-content-between">
-                            <h3>Meteo: <span class="brand-blue">{{ data.weather.city }}</span></h3>
-                            <button id="btn-weather" class="logout-btn" style="padding: 2px 8px; font-size: 0.7rem;" 
-                                    onclick="refreshData('weather/update/{{ data.weather.city }}', 'btn-weather')">Aggiorna</button>
+                <div class="main-dashboard-grid">
+                    <div class="grid-left">
+                        <div class="card">
+                            <div class="d-flex justify-content-between">
+                                <h3>Meteo: <span class="brand-blue">{{ data.weather.city }}</span></h3>
+                                <button id="btn-weather" class="logout-btn" style="padding: 2px 8px; font-size: 0.7rem;" 
+                                        onclick="refreshData('weather/update/{{ data.weather.city }}', 'btn-weather')">Aggiorna</button>
+                                        <p><strong>{{ data.weather.temperature }}°C</strong> - {{ data.weather.description }}</p>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="weatherChart"></canvas>
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="grid-right">
+                        <div class="card">
+                            <h3>Cambio: <span class="brand-green">EUR/USD</span></h3>
+                            <p>Tasso attuale: <strong>{{ data.exchange.rate }}</strong></p>
+                            <p class="brand-gray">Aggiornato alle: {{ data.exchange.timestamp.strftime('%H:%M') }}</p>
                         </div>
-                        <p><strong>{{ data.weather.temperature }}°C</strong> - {{ data.weather.description }}</p>
-                        <div style="height: 100px; width: 100%;">
-                            <canvas id="weatherChart"></canvas>
-                        </div>
-                    </div>
 
-                    <div class="card">
-                        <h3>Cambio: <span class="brand-green">EUR/USD</span></h3>
-                        <p>Tasso attuale: <strong>{{ data.exchange.rate }}</strong></p>
-                        <p class="brand-gray">Aggiornato alle: {{ data.exchange.timestamp.strftime('%H:%M') }}</p>
+                        <div class="card">
+                            <h3>News: <span class="brand-green">Tecnologia</span></h3>
+                            <ul style="list-style: none; padding: 0; text-align: left; font-size: 0.85rem;">
+                                {% for item in data.news %}
+                                <li style="margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px;">
+                                    <a href="{{ item.url }}" target="_blank" style="text-decoration: none; color: #333;">
+                                        <strong>[{{ item.source }}]</strong> {{ item.title[:50] }}...
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>                        
                     </div>
-
-                    <div class="card">
-                        <h3>News: <span class="brand-green">Tecnologia</span></h3>
-                        <ul style="list-style: none; padding: 0; text-align: left; font-size: 0.85rem;">
-                            {% for item in data.news %}
-                            <li style="margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px;">
-                                <a href="{{ item.url }}" target="_blank" style="text-decoration: none; color: #333;">
-                                    <strong>[{{ item.source }}]</strong> {{ item.title[:50] }}...
-                                </a>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>                
-                <!-- <div class="dashboard-grid">
-                    <div class="card"><h3>"Progetto Sito Web" - <span class="brand-blue">In corso.</span></h3>
-                        <p>Si tratta di una prova per migliorare le mie skill di frontend/static.</p>
-                        <a href="pagina-progetto.html" class="main-link">Vai al progetto</a>
-                    </div>
-                    <div class="card"> 
-                        <h3>"Database" - <span class="brand-green">Completato</span></h3>
-                        <p>Un Database unificato per tutti i progetti che avranno luogo qui .</p>
-                    </div>
-                    <div class="card">
-                        <h3>"Nuova App" - <span class="brand-gray">Idea.</span></h3>
-                        <p>Avevo pensato di fare un progetto di automazione per la creazione del progetto.
-                            In quanto il pulsante nuovo progetto dovrebbe prendere alcuni parametri e lanciare la 
-                            creazione del progetto. Credo che sarà l'obiettivo del pulsante nuovo
-                        </p>
-                    </div>
-                    <div class="card"> <h3>"Nuova App" - <span class="brand-gray">Idea.</span></h3></div>
-                </div> -->
+                </div>
             </div>
 
+        </section>
+        <section class="services-section">
+            <h2 class="section-title">Servizi & Progetti</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🚀</div>
+                    <div class="service-info">
+                        <h3>DietPi Dash</h3>
+                        <p>Monitoraggio avanzato del sistema</p>
+                    </div>
+                    <a href="http://mio_ip:5232" target="_blank" class="service-link">Apri</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🚀</div>
+                    <div class="service-info">
+                        <h3>Auth System</h3>
+                        <p>Servizio di autenticazione</p>
+                    </div>
+                    <a href="http://mio_ip:5232" target="_blank" class="service-link">Apri</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🚀</div>
+                    <div class="service-info">
+                        <h3>E-commerce Backend</h3>
+                        <p>Simulazione e-commerce </p>
+                    </div>
+                    <a href="http://mio_ip:5232" target="_blank" class="service-link">Apri</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🚀</div>
+                    <div class="service-info">
+                        <h3>Simple blog</h3>
+                        <p>Un semplice blog</p>
+                    </div>
+                    <a href="http://mio_ip:5232" target="_blank" class="service-link">Apri</a>
+                </div>
+            </div>
         </section>
     </main>
     <footer class="brand-green"> &copy; 2026 By S'anneaux</footer>

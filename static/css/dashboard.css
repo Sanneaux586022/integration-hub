@@ -305,21 +305,16 @@ body {
     }
 }
 
-.dashboard-grid {
-    display: flex;
-    flex-wrap: wrap;
+.main-dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
     gap: 1.5rem;
+    width: 100%;
     margin-top: 2rem;
+    align-items: stretch;
 }
 
-.dashboard-grid .card {
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 calc(33.333% - 1rem);
-    border: 1px solid #eee;
-    border-radius: 8px;
-    background: #ffffff;
-    padding: 1.5rem;
+.main-dashboard-grid .card {
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     cursor: pointer;
@@ -327,34 +322,41 @@ body {
     position: relative;
 }
 
-.card .main-link::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
+.grid-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+.grid-right .card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
-.card h3 {
-    font-size: 1.1rem;
-    line-height: 1.3;
-    color: #222;
+.grid-right .card h3 {
+    margin-bottom: 1rem;
 }
-.card p {
-    font-size: 0.95rem;
-    color: #555;
-    line-height: 1.5;
+
+.grid-right .card p,
+.grid-right .card ul {
     flex-grow: 1;
 }
-.card a {
-    text-decoration: none;
+
+.grid-left .card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-container {
+    position: relative;
+    height: 350px;
+    width: 100%;
 }
 
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(2, 116, 11, 0.2);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
     border-color: rgb(2, 116, 11);
 }
 
@@ -456,18 +458,6 @@ footer a:hover {
     text-align: left;
 }
 
-.form-group label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-.form-group input, .form-group select, .form-group textarea {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-family: inherit;
-}
 
 /* Pulsanti nel modale */
 .modal-actions {
@@ -626,4 +616,81 @@ footer a:hover {
 .dashboard-content {
     margin-left: 100px;
     transition: margin-left 0.4s ease;
+}
+
+.main-dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+.services-section {
+    margin-top: 3rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+}
+
+.services-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.service-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-width: 280px;
+    flex: 1;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease , box-shadow 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    position: relative;
+}
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 4px; height: 100%;
+    background: #007bff;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.service-card:hover::before {
+    opacity: 1;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    border-color: #007bff;
+}
+
+.service-card:active {
+    transform: translateY(-2px);
+}
+
+.service-link {
+    margin-left: auto;
+    padding: 0.5rem 1rem;
+    background: #f0f4f8;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    transition: background 0.2s;
+
+}
+
+.service-link:hover {
+    background: #007bff;
+    color: white;
 }

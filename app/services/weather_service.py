@@ -1,7 +1,7 @@
 import httpx
 import os
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.models.models import WeatherData
+from app.models.weatherData import WeatherData
 
 class weatherService:
     def __init__(self, db_session: AsyncSession):
