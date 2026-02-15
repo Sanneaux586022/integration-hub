@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Request, Depends
+from fastapi import FastAPI, Request, Depends, status
+from fastapi.responses import RedirectResponse 
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from app.db.database import engine , Base
@@ -9,6 +10,8 @@ from app.db.database import get_db
 from fastapi.staticfiles import StaticFiles
 from datetime import datetime
 from app.services.system_service import sytemService
+from app.models.user import User
+from app.core.security import get_current_user
 
 
 app= FastAPI(title="Integration Hub API")
@@ -56,7 +59,10 @@ async def get_register_page(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
 
 @app.get("/dashboard", response_class=HTMLResponse)
-async def get_dashboard_page(request: Request, db: AsyncSession = Depends(get_db)):
+async def get_dashboard_page(request: Request, db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
+    if current_user is None:
+        return RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+    
     from app.api.routes import get_dashboard
     dashboard_data = await get_dashboard(db)
 
@@ -68,6 +74,6 @@ async def get_dashboard_page(request: Request, db: AsyncSession = Depends(get_db
     return templates.TemplateResponse("dashboard.html", {
         "request": request,
         "data": full_data,
-        "now": datetime.now()
-    })
-
+        "now": datetime.now(),
+        "user": current_user
+    })   

@@ -1,5 +1,5 @@
 import os
-from fastapi import APIRouter , Depends, HTTPException
+from fastapi import APIRouter , Depends, HTTPException, Request
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.database import get_db
@@ -18,15 +18,13 @@ from app.schemas.users import UserOut, UserCreate, UserLogin, Token
 from app.core.security import create_acces_token
 from datetime import datetime, timedelta
 from app.core.security import get_current_user
-from dotenv import load_dotenv
+from app.core.config import settings
 
-
-load_dotenv()
 
 router = APIRouter()
 
 @router.get("/weather/update/{city}")
-async def update_weather(city : str, db: AsyncSession=Depends(get_db)):
+async def update_weather(city : str, db: AsyncSession=Depends(get_db), current_user: User = Depends(get_current_user)):
     service = weatherService(db)
 
     try:
@@ -38,13 +36,14 @@ async def update_weather(city : str, db: AsyncSession=Depends(get_db)):
                 "id": weather_record.id,
                 "temp": weather_record.temperature,
                 "desc": weather_record.description
-            }
+            },
+            "user": current_user.username
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Errore durante l'aggiornamento della temperatura: {str(e)}")
 
 @router.get("/exchange/update/{base}/{target}")
-async def update_exchange(base: str , target: str, db: AsyncSession=Depends(get_db)):
+async def update_exchange(base: str , target: str, db: AsyncSession=Depends(get_db), current_user: User = Depends(get_current_user)):
     service = exchangeService(db)
 
     try:
@@ -64,7 +63,7 @@ async def update_exchange(base: str , target: str, db: AsyncSession=Depends(get_
         raise HTTPException(status_code=500, detail=f"Errore durante l'aggiornamento del cambio: {str(e)}")
     
 @router.get("/news/update/{topic}")
-async def update_news(topic: str, db: AsyncSession=Depends(get_db)):
+async def update_news(topic: str, db: AsyncSession=Depends(get_db), current_user: User = Depends(get_current_user)):
 
     service = newsService(db)
 
@@ -82,7 +81,7 @@ async def update_news(topic: str, db: AsyncSession=Depends(get_db)):
     
 
 @router.get("/dashboard")
-async def get_dashboard(db: AsyncSession=Depends(get_db)):
+async def get_dashboard(db: AsyncSession=Depends(get_db), current_user: User = Depends(get_current_user)):
     # 1.Recuperiamo l'ultimo meteo
     weather_query = await db.execute(select(WeatherData).order_by(WeatherData.timestamp.desc()).limit(1))
     latest_weather = weather_query.scalar_one_or_none()
@@ -103,7 +102,7 @@ async def get_dashboard(db: AsyncSession=Depends(get_db)):
     }
 
 @router.get("/weather/history")
-async def last_24_hours_temperatures(db: AsyncSession=Depends(get_db)):
+async def last_24_hours_temperatures(db: AsyncSession=Depends(get_db), current_user: User = Depends(get_current_user)):
     weather_query = await db.execute(select(WeatherData).order_by(WeatherData.timestamp.desc()).limit(24))
     history = weather_query.scalars().all()
 
@@ -116,7 +115,7 @@ async def last_24_hours_temperatures(db: AsyncSession=Depends(get_db)):
     ]
 
 @router.get("/system-stats")
-async def get_stats():  
+async def get_stats(current_user: User = Depends(get_current_user)):  
     stats = sytemService.get_syst_stats()
     return stats
 
@@ -127,11 +126,13 @@ async def registra_utente(user_in: UserCreate, db: AsyncSession=Depends(get_db))
     return await service_user.create_user(user_in)
 
 @router.post("/login", response_model=Token)
-async def effettua_login(db: AsyncSession=Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()):
+# async def effettua_login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession=Depends(get_db)):
+async def effettua_login(login_data: UserLogin, db: AsyncSession=Depends(get_db)):
+    
     service_user = userService(db)
 
-    user =  await service_user.authenticate_user(email= form_data.username, password=form_data.password)
-    access_token_expires = timedelta(minutes= int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")))
+    user =  await service_user.authenticate_user(email= login_data.email, password=login_data.plain_password)
+    access_token_expires = timedelta(minutes= settings.ACCESS_TOKEN_EXPIRE_MINUTES)
 
     access_token = create_acces_token(
         data= {"sub": user.email},

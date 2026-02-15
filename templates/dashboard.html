@@ -6,7 +6,6 @@
     <title>Document</title>
     <link rel="stylesheet" href="/static/css/dashboard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="/static/js/auth.js"></script>
     <script src="/static/js/dashboard.js"></script>
 </head>
 <body>
@@ -25,7 +24,7 @@
                 <li><a href="#">Impostazioni</a></li>
             </ul>
             <div class="nav-user">
-                <button class="logout-btn">Esci</button>
+                <button onclick="logout()" class="logout-btn">Esci</button>
             </div>            
         </div>
     </header>
@@ -70,7 +69,7 @@
     </aside>
     <main class="dashboard-content">
         <section class="hero-content">
-            <h1>Benvenuto, <span class="brand-green highlight">Sanneaux</span>!</h1>
+            <h1>Benvenuto, <span class="brand-green highlight">{{user.username}}</span>!</h1>
             <p>La tua avventura nei progetti SM continua dove l'avevi lasciata.</p>
             <div class="quick-actions">
                 <button class="action-btn secondary">Esplora</button>

@@ -2,10 +2,11 @@ import httpx
 import os
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.weatherData import WeatherData
+from app.core.config import settings
 
 class weatherService:
     def __init__(self, db_session: AsyncSession):
-        self.api_key = os.getenv("WEATHER_API_KEY")
+        self.api_key = settings.WEATHER_API_KEY
         self.base_url = "https://api.openweathermap.org/data/2.5/weather"
         self.db = db_session
 

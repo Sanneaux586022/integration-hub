@@ -27,4 +27,4 @@ async def scheduled_update():
         print("--- [SCHEDULER] Dati salvati con successo ---")
 
 # Programmiamo il task : ogni 3 ore
-scheduler.add_job(scheduled_update, "interval", hours=2)
+scheduler.add_job(scheduled_update, "interval", hours=3)

@@ -1,14 +1,11 @@
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase
 import os
-from dotenv import load_dotenv
+from app.core.config import settings
 
-load_dotenv()
-
-DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Creazione del motore asincrono
-engine = create_async_engine(DATABASE_URL, echo=True, pool_recycle=3600)
+engine = create_async_engine(settings.DATABASE_URL, echo=True, pool_recycle=3600)
 
 # Sessione per le query
 AsyncSessionLocal = async_sessionmaker(bind=engine, expire_on_commit=False)

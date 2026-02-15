@@ -2,10 +2,11 @@ import httpx
 import os
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.exchangeData import ExchangeData
+from app.core.config import settings
 
 class exchangeService:
     def __init__(self, db_session: AsyncSession):
-        self.api_key = os.getenv("EXCHANGE_API_KEY")
+        self.api_key = settings.EXCHANGE_API_KEY
         self.base_url = f"https://v6.exchangerate-api.com/v6/{self.api_key}/latest/"
         self.db = db_session
 

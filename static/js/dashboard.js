@@ -2,6 +2,10 @@ async function loadChart() {
     try {
 
         const response = await fetch("/api/v1/weather/history");
+        if (response.status === 401) {
+            alert("Sessione scaduta , effettuare di nuovo il login.");
+            logout();
+        }
         const data = await response.json()
 
         const labels = data.map(d => d.time);
@@ -48,6 +52,12 @@ async function refreshData(endpoint, buttonId){
 
     try {
         const response = await fetch(`/api/v1/${endpoint}`);
+
+        if (response.status === 401) {
+            alert("Sessione scaduta , effettuare di nuovo il login.");
+            logout();
+        }
+
         if (response.ok) {
             alert("Dati aggiornati con successo!");
             location.reload();
@@ -66,6 +76,11 @@ async function refreshData(endpoint, buttonId){
 async function updateSystemStats() {
     try {
         response = await fetch('/api/v1/system-stats');
+
+        if (response.status === 401) {
+            alert("Sessione scaduta , effettuare di nuovo il login.");
+            logout();
+        }
 
         if (response.ok) {
             const data = await response.json();
@@ -87,6 +102,14 @@ async function updateSystemStats() {
     } catch (error) {
         console.error("Errore durante l'aggiornamento");
     }
+}
+function logout() {
+    document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+
+    localStorage.removeItem("isLoggedin");
+    localStorage.removeItem("currentUser");
+
+    window.location.href = '/login';
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -3,10 +3,12 @@ import os
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.newsArticle import NewsArticle
 from datetime import datetime
+from app.core.config import settings
+
 
 class newsService:
     def __init__(self, db_session: AsyncSession):
-        self.api_key = os.getenv("NEWS_API_KEY")
+        self.api_key = settings.NEWS_API_KEY
         # self.base_url = "https://newsapi.org/v2/top-headlines"
         self.base_url = "https://newsapi.org/v2/everything"
         self.db = db_session
