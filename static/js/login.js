@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Selezioniamo il form e gli input
     const loginForm = document.getElementById('loginForm');
-    const usernameInput = document.getElementById('username');
+    const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
     const togglePassword = document.getElementById('togglePassword');
 
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loginForm.onsubmit = (e) => {
             e.preventDefault(); // Evita il refresh della pagina
 
-            const usernameValue = usernameInput.value;
+            const emailValue = emailInput.value;
             const passwordValue = passwordInput.value;
 
             // Recuperiamo l'eventuale utente registrato

@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
+from typing import Optional
 
 class UserBase(BaseModel):
     email : EmailStr
@@ -16,4 +17,15 @@ class UserOut(UserBase):
     model_config = {
         "from_attributes" : True
     }
-        
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    plain_password : str
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type : str
+
+class TokenData(BaseModel):
+    email: Optional[str] = None

@@ -30,5 +30,5 @@ ENV PYTHONPATH=/app
 
 # Comando per avviare Uvicorn
 # Usiamo la forma 'app.main:app' assumendo che main.py sia dentro la cartella /app
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 # CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "reload-dir","app"]

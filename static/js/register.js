@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Salviamo nel localStorage
             // Trasformiamo l'oggetto in stringa perché localStorage accetta solo stringhe
             localStorage.setItem('userCredentials', JSON.stringify(newUser));
+            
 
             alert("Account creato con successo! Verrai reindirizzato al login.");
             window.location.href = "/login"; 

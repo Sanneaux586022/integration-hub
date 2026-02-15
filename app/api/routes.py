@@ -1,15 +1,27 @@
+import os
 from fastapi import APIRouter , Depends, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.database import get_db
 from app.services.weather_service import weatherService
 from app.services.exchange_service import exchangeService
 from app.services.news_service import newsService
 from app.services.system_service import sytemService
+from app.services.user_service import userService
 from sqlalchemy import select
 from app.models.exchangeData import ExchangeData
 from app.models.newsArticle import NewsArticle
 from app.models.weatherData import WeatherData
+from app.models.user import User
 from zoneinfo import ZoneInfo
+from app.schemas.users import UserOut, UserCreate, UserLogin, Token
+from app.core.security import create_acces_token
+from datetime import datetime, timedelta
+from app.core.security import get_current_user
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 router = APIRouter()
 
@@ -107,3 +119,26 @@ async def last_24_hours_temperatures(db: AsyncSession=Depends(get_db)):
 async def get_stats():  
     stats = sytemService.get_syst_stats()
     return stats
+
+@router.post("/registrazione", response_model=UserOut)
+async def registra_utente(user_in: UserCreate, db: AsyncSession=Depends(get_db)):
+    service_user = userService(db)
+
+    return await service_user.create_user(user_in)
+
+@router.post("/login", response_model=Token)
+async def effettua_login(db: AsyncSession=Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()):
+    service_user = userService(db)
+
+    user =  await service_user.authenticate_user(email= form_data.username, password=form_data.password)
+    access_token_expires = timedelta(minutes= int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")))
+
+    access_token = create_acces_token(
+        data= {"sub": user.email},
+        expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
+
+@router.get("/me", response_model= UserOut)
+async def leggi_mio_profilo(current_user: User = Depends(get_current_user)):
+    return current_user
