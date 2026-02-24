@@ -1,0 +1,27 @@
+[project]
+name = "saitama-project"
+version = "0.1.0"
+description = "Hub di automazione e monitoraggio su Raspberry Pi"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "sqlalchemy[asyncio]",
+    "aiomysql",
+    "httpx",
+    "python-dotenv",
+    "pydantic[email]",
+    "pydantic-settings",
+    "apscheduler",
+    "jinja2",
+    "psutil==5.9.8",
+    "passlib[bcrypt]",
+    "bcrypt==4.0.1",
+    "python-jose[cryptography]",
+    "python-multipart",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
