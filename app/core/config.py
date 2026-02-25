@@ -19,4 +19,7 @@ class Settings(BaseSettings):
     NEWS_API_KEY: str = os.getenv("NEWS_API_KEY")
     WEATHER_API_KEY: str = os.getenv("WEATHER_API_KEY")
 
+    AXESSO_API_KEY: str = os.getenv("AXESSO_API_KEY")
+    ARTICOLI_RICERCA : str = os.getenv("ARTICOLI_RICERCA")
+    AXESSO_BASE_URL: str = os.getenv("AXESSO_BASE_URL")
 settings = Settings()

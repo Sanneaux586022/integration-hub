@@ -1,3 +1,4 @@
+import logging
 from fastapi import FastAPI, Request, Depends, status
 from fastapi.responses import RedirectResponse 
 from fastapi.templating import Jinja2Templates
@@ -11,7 +12,20 @@ from fastapi.staticfiles import StaticFiles
 from datetime import datetime
 from app.services.system_service import sytemService
 from app.models.user import User
+from app.models.trackingData import Articolo, Ricerca, RisultatoRicerca, StoricoPrezzo
 from app.core.security import get_current_user
+from app.core.scheduler import scheduled_update, scheduled_ricerca_amazon
+from app.core.config import settings
+
+# Configurazione semplice che stampa: LIVELLO - NOME_MODULO - MESSAGGIO
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(levelname)s: [%(name)s] %(message)s"
+)
+
+logger = logging.getLogger(__name__)
+logger.info("Integration-hub avviato con successo")
 
 
 app= FastAPI(title="Integration Hub API")
@@ -24,16 +38,38 @@ templates =  Jinja2Templates(directory="templates")
 async def startup_event():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-        print("Database inizializzato.")
+        logger.info("Database inizializzato.")
 
     if not scheduler.running:
         scheduler.start()
-        print("Scheduler avviato: i task automatici sono attivi.")
+        logger.info("Scheduler avviato: i task automatici sono attivi.")
+
+
+    if not scheduler.get_job("amazon_rotative_task"):
+        scheduler.add_job(
+            scheduled_ricerca_amazon,
+            "interval",
+            hours=16, # <--- 16 ore per non superare le 50 chiamate/mese
+            id="amazon_rotative_task",
+            misfire_grace_time=3600
+        )
+        logger.info("Task rotativo Amazon configurato (1 chiamata ogni 16 ore)")
+
+    if not scheduler.get_job("api_task"):
+        scheduler.add_job(
+            scheduled_update, 
+            "interval", 
+            hours=3, 
+            id = "api_task", 
+            misfire_grace_time=3600
+        )
+        logger.info("Task API Update aggiunto")
+
 
 @app.on_event("shutdown")
 async def shutdown_event():
     scheduler.shutdown()
-    print("scheduler spento.")
+    logger.info("scheduler spento.")
     
 @app.get("/")
 def read_root():

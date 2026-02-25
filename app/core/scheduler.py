@@ -3,12 +3,16 @@ from app.db.database import AsyncSessionLocal
 from app.services.weather_service import weatherService
 from app.services.exchange_service import exchangeService
 from app.services.news_service import newsService
+from app.services.amazon_tracking_service import AmazonTrackingService
+from app.core.config import settings
+import logging
 
+logger = logging.getLogger(__name__)
 scheduler = AsyncIOScheduler()
 
 async def scheduled_update():
     async with AsyncSessionLocal() as db:
-        print("--- [SCHEDULER] Avvio aggiornamento dati ---")
+        logger.info("--- [SCHEDULER] Avvio aggiornamento dati ---")
         try:
             # 2. Aggiorna il meteo
             weather = weatherService(db)
@@ -22,9 +26,25 @@ async def scheduled_update():
             news = newsService(db)
             await news.fetch_and_save_news("tecnologia")
         except Exception as e:
-            print(f"--- [SCHEDULER] ERRORE: {str(e)}")
+            logger.info(f"--- [SCHEDULER] ERRORE: {str(e)}")
 
-        print("--- [SCHEDULER] Dati salvati con successo ---")
+        logger.info("--- [SCHEDULER] Dati salvati con successo ---")
 
-# Programmiamo il task : ogni 3 ore
-scheduler.add_job(scheduled_update, "interval", hours=3)
+async def scheduled_ricerca_amazon():
+    keywords = [kw.strip() for kw in settings.ARTICOLI_RICERCA.split(',')]
+    if not keywords:
+        return
+
+    # Trucco: usiamo il numero di ore passate dal 1970 diviso 12 
+    # per ottenere un indice che cambia ogni 12 ore
+    import time
+    indice_rotazione = int(time.time() // (12 * 3600)) % len(keywords)
+    kw_da_cercare = keywords[indice_rotazione]
+
+    async with AsyncSessionLocal() as db:
+        try:
+            logger.info(f"CONSUMO API: Ricerca rotativa per: {kw_da_cercare} (Indice {indice_rotazione})")
+            tracker = AmazonTrackingService(db)
+            await tracker.get_risultati_articoli(keyword=kw_da_cercare)
+        except Exception as e:
+            logger.error(f"Errore nella ricerca rotativa di '{kw_da_cercare}': {e}")

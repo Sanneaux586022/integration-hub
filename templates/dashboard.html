@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +8,18 @@
     <link rel="stylesheet" href="/static/css/dashboard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/static/js/dashboard.js"></script>
+    <link rel="icon" href="/static/images/favicon.png" type="image/x-icon">
 </head>
+
 <body>
     <header class="main-navbar">
         <div class="nav-container">
             <div class="nav-logo">
                 <img src="/static/images/biggercirclelogo.png" alt="Logo">
-                    <div class="logo-text">
-                        <span class="brand-blue">Dashboard</span>
-                        <span class="brand-green">S'anneaux</span>
-                    </div>
+                <div class="logo-text">
+                    <span class="brand-blue">Dashboard</span>
+                    <span class="brand-green">S'anneaux</span>
+                </div>
             </div>
             <ul class="nav-links">
                 <li><a href="#">Dashboard</a></li>
@@ -25,7 +28,7 @@
             </ul>
             <div class="nav-user">
                 <button onclick="logout()" class="logout-btn">Esci</button>
-            </div>            
+            </div>
         </div>
     </header>
     <aside class="sidebar-mini">
@@ -37,10 +40,11 @@
                     <span class="text-success">{{ data.system.status }}</span>
                 </div>
             </div>
-            
+
             <div class="sidebar-divider"></div>
 
-            <div class="sidebar-item {% if data.system.cpu_temp != 'N/A' and data.system.cpu_temp > 60 %}danger{% endif %}" title="Temperatura CPU">
+            <div class="sidebar-item {% if data.system.cpu_temp != 'N/A' and data.system.cpu_temp > 60 %}danger{% endif %}"
+                title="Temperatura CPU">
                 <span class="icon">🌡️</span>
                 <div class="sidebar-label">
                     <small>CPU TEMP</small>
@@ -93,14 +97,15 @@
                         <div class="card">
                             <div class="d-flex justify-content-between">
                                 <h3>Meteo: <span class="brand-blue">{{ data.weather.city }}</span></h3>
-                                <button id="btn-weather" class="logout-btn" style="padding: 2px 8px; font-size: 0.7rem;" 
-                                        onclick="refreshData('weather/update/{{ data.weather.city }}', 'btn-weather')">Aggiorna</button>
-                                        <p><strong>{{ data.weather.temperature }}°C</strong> - {{ data.weather.description }}</p>
+                                <button id="btn-weather" class="logout-btn" style="padding: 2px 8px; font-size: 0.7rem;"
+                                    onclick="refreshData('weather/update/{{ data.weather.city }}', 'btn-weather')">Aggiorna</button>
+                                <p><strong>{{ data.weather.temperature }}°C</strong> - {{ data.weather.description }}
+                                </p>
                             </div>
                             <div class="chart-container">
                                 <canvas id="weatherChart"></canvas>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                     <div class="grid-right">
                         <div class="card">
@@ -114,13 +119,14 @@
                             <ul style="list-style: none; padding: 0; text-align: left; font-size: 0.85rem;">
                                 {% for item in data.news %}
                                 <li style="margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px;">
-                                    <a href="{{ item.url }}" target="_blank" style="text-decoration: none; color: #333;">
+                                    <a href="{{ item.url }}" target="_blank"
+                                        style="text-decoration: none; color: #333;">
                                         <strong>[{{ item.source }}]</strong> {{ item.title[:50] }}...
                                     </a>
                                 </li>
                                 {% endfor %}
                             </ul>
-                        </div>                        
+                        </div>
                     </div>
                 </div>
             </div>
@@ -172,13 +178,13 @@
                 <h2>Configura Nuovo Progetto</h2>
                 <button class="close-modal" aria-label="Chiudi">&times;</button>
             </div>
-            
+
             <form id="projectForm">
                 <div class="form-group">
                     <label for="projectName">Nome Progetto</label>
                     <input type="text" id="projectName" placeholder="es. Progetto_Alpha" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="techStack">Tecnologia</label>
                     <select id="techStack" required>
@@ -192,7 +198,8 @@
 
                 <div class="form-group">
                     <label for="extraParams">Parametri Extra (opzionale)</label>
-                    <textarea id="extraParams" placeholder="Es. librerie specifiche da aggiungere al requirements/static."></textarea>
+                    <textarea id="extraParams"
+                        placeholder="Es. librerie specifiche da aggiungere al requirements/static."></textarea>
                 </div>
 
                 <div class="modal-actions">
@@ -201,6 +208,7 @@
                 </div>
             </form>
         </div>
-    </div>   
+    </div>
 </body>
+
 </html>

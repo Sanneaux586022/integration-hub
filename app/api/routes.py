@@ -143,3 +143,7 @@ async def effettua_login(login_data: UserLogin, db: AsyncSession=Depends(get_db)
 @router.get("/me", response_model= UserOut)
 async def leggi_mio_profilo(current_user: User = Depends(get_current_user)):
     return current_user
+
+# @router.get("/amazon")
+# async def recupera_prodotti(current_user: User, db: AsyncSession=Depends(get_db)):
+#     pass
