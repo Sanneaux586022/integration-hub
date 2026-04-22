@@ -1,9 +1,10 @@
-import pytest
 from datetime import timedelta
-from jose import jwt, JWTError
 
-from app.core.security import verify_password, get_password_hash, create_acces_token
+import pytest
+from jose import JWTError, jwt
+
 from app.core.config import settings
+from app.core.security import create_access_token, get_password_hash, verify_password
 
 
 def test_hash_is_different_from_plain():
@@ -35,19 +36,19 @@ def test_verify_password_empty_string():
 
 
 def test_create_token_contains_sub():
-    token = create_acces_token(data={"sub": "user@example.com"})
+    token = create_access_token(data={"sub": "user@example.com"})
     payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
     assert payload["sub"] == "user@example.com"
 
 
 def test_create_token_contains_exp():
-    token = create_acces_token(data={"sub": "user@example.com"})
+    token = create_access_token(data={"sub": "user@example.com"})
     payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
     assert "exp" in payload
 
 
 def test_create_token_custom_expiry():
-    token = create_acces_token(
+    token = create_access_token(
         data={"sub": "user@example.com"},
         expires_delta=timedelta(hours=2),
     )
@@ -58,8 +59,9 @@ def test_create_token_custom_expiry():
 def test_create_token_default_expiry_is_15_min():
     """Senza expires_delta il fallback è 15 minuti."""
     import time
+
     before = int(time.time())
-    token = create_acces_token(data={"sub": "u@e.com"})
+    token = create_access_token(data={"sub": "u@e.com"})
     payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
     after = int(time.time())
     expected_exp_low = before + 14 * 60
@@ -68,12 +70,12 @@ def test_create_token_default_expiry_is_15_min():
 
 
 def test_token_invalid_with_wrong_key():
-    token = create_acces_token(data={"sub": "user@example.com"})
+    token = create_access_token(data={"sub": "user@example.com"})
     with pytest.raises(JWTError):
         jwt.decode(token, "completamente-sbagliata", algorithms=[settings.ALGORITHM])
 
 
 def test_token_invalid_algorithm():
-    token = create_acces_token(data={"sub": "user@example.com"})
+    token = create_access_token(data={"sub": "user@example.com"})
     with pytest.raises(JWTError):
         jwt.decode(token, settings.SECRET_KEY, algorithms=["RS256"])

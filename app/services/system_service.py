@@ -1,15 +1,17 @@
 import logging
 import subprocess
+
 import psutil
 
 # Questo logger prenderà il nome del file (es. app.services.system)
 logger = logging.getLogger(__name__)
 
-class sytemService:
+
+class systemService:
     @staticmethod
     def get_syst_stats():
         cpu_temp = "N/A"
-        
+
         try:
             # Fallback: lettura diretta dal kernel
             with open("/sys/class/thermal/thermal_zone0/temp", "r") as f:
@@ -23,5 +25,5 @@ class sytemService:
             "cpu_temp": cpu_temp,
             "cpu_usage": psutil.cpu_percent(interval=None),
             "ram_usage": psutil.virtual_memory().percent,
-            "status": "Online"
+            "status": "Online",
         }

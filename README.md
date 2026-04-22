@@ -256,7 +256,7 @@ I test usano **SQLite in-memory** (via `aiosqlite`) al posto di MySQL: nessun da
 | # | Problema | Posizione | Fix |
 |---|---|---|---|
 | 11 | **Typo `acces_token`** (manca una `s`) | `security.py:42`, `routes.py:18` | Rinominare in `create_access_token` (aggiornare tutti i riferimenti) |
-| 12 | **Typo `sytemService`** (manca la `s`) | `system_service.py`, `routes.py`, `main.py` | Rinominare in `SystemService` |
+| 12 | **Typo `systemService`** (manca la `s`) | `system_service.py`, `routes.py`, `main.py` | Rinominare in `SystemService` |
 | 13 | **Modelli duplicati in `models.py`** | `app/models/models.py` | Ridefinisce WeatherData, ExchangeData, NewsArticle — eliminare il file |
 | 14 | **Codice commentato** | `app/api/routes.py:147–149` | Rimuovere il blocco `@router.get("/amazon")` commentato |
 | 15 | **Docstring template non compilati** | `app/core/security.py:21–31` | Rimuovere o completare il template `:param Description` |
