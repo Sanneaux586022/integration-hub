@@ -51,7 +51,8 @@ async def startup_event():
             "interval",
             hours=16, # <--- 16 ore per non superare le 50 chiamate/mese
             id="amazon_rotative_task",
-            misfire_grace_time=3600
+            misfire_grace_time=3600,
+            # next_run_time= datetime.now()
         )
         logger.info("Task rotativo Amazon configurato (1 chiamata ogni 16 ore)")
 

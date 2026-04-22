@@ -1,45 +1,46 @@
-# Byte-compiled / cache
+# Secrets e configurazione locale
+.env
+.env.*
+!.env.example
+
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
 
-# Virtual environment
+# Virtualenv / uv
+.venv/
 venv/
 .env/
-.venv/
+.uv/
 
-# VSCode / PyCharm
+# Test e coverage
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# IDE
 .vscode/
 .idea/
 
-# OS
+# Sistema operativo
 .DS_Store
 Thumbs.db
 
-# Logs
+# Log
 *.log
+logs/
 
 # Database locali
 *.sqlite3
 *.db
 
-# File di configurazione sensibili
-.env
-.env.*
-
 # Build / dist
 build/
 dist/
 *.egg-info/
+*.spec
 
 # Jupyter
 .ipynb_checkpoints/
-
-# PyInstaller
-*.spec
-
-# Environment Variables
-.env
-.env.*
-# But the axample
-! .env.example

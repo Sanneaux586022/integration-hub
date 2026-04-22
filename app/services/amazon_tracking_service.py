@@ -19,26 +19,29 @@ class AmazonTrackingService:
     
     async def get_risultati_articoli(self, keyword: str):
         # final_response  = []
-        try:
-            risultati_api, asin_list = await self.api_client.fetch_from_api(key_word=keyword)
+        logger.info("INIZIO JOB DI AMAZON")
 
+        risultati_api, asin_list = await self.api_client.fetch_from_api(key_word=keyword)
+        art_esistenti = await self.repo.get_articoli_esistenti(asin_list)
+
+        try:
             ricerca = await self.repo.inserisci_ricerca(keyword)
 
-            art_esistenti = await self.repo.get_articoli_esistenti(asin_list)
             list_bulk_storico = []
             list_bulk_risultato_ricerca = []
 
             for posizione, res in enumerate(risultati_api):
                 asin_art = res.get("asin")
                 prezzo_raw = res.get("price")
+                titolo_art = res.get("productDescription", "")
 
                 articolo = art_esistenti.get(asin_art)
                 if not articolo:
-                    articolo = await self.repo.crea_articolo(asin_art, res.get("productDescription", ""))
+                    articolo = await self.repo.crea_articolo(asin_art, titolo_art)
                 
                 try:
                     prezzo_float = float(prezzo_raw) if prezzo_raw else None
-                except ValueError:
+                except (ValueError, TypeError):
                     prezzo_float = None
 
                 if prezzo_float is not None:
@@ -53,20 +56,18 @@ class AmazonTrackingService:
 
                     ))
 
-                # final_response.append({
-                #     "asin": asin_art,
-                #     "titolo": res.get("productDescription", ""),
-                #     "prezzo": prezzo_float
-                # })
-
-            self.db.add_all(list_bulk_storico)
-            self.db.add_all(list_bulk_risultato_ricerca)
+            if list_bulk_risultato_ricerca:
+                self.db.add_all(list_bulk_storico)
+            if list_bulk_storico:
+                self.db.add_all(list_bulk_risultato_ricerca)
 
             await self.db.commit()
             # return final_response
+            logger.info(f"JOB COMPLETATO: Salvati {len(list_bulk_storico)} prezzi")
         except Exception as e:
             await self.db.rollback()
-            raise e        
+            logger.info(f"Errore durante il salvataggio dei dati Amazon: {e}")
+            raise   
     
 
 class AmazonApiclient:

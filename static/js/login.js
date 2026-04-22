@@ -37,13 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Il server ha restituito il token nel JSON,
                     // ma noi vogliamo che sia salvato nei Cookies per la dashboard.
-                    // Lo facciamo vis JS se il server non lo ha già impostato:
+                    // Lo facciamo via JS se il server non lo ha già impostato:
                     document.cookie = `access_token=${result.access_token}; path=/; SameSite=Lax`;
-                    alert('Accesso autorizzato!');
+                    // alert('Accesso autorizzato!');
                     window.location.href = '/dashboard';
                 } else {
                     const errorData = await response.json();
-                    console.log("Errore 422o simile : ", errorData);
+                    console.log("Errore 422 o simile : ", errorData);
                     alert('Credenziali non valide o errore formato dati');
                 }
 
