@@ -107,9 +107,9 @@ class AmazonApiclient:
                     continue
                 raise
             except (httpx.ReadTimeout, httpx.ConnectError):
-                            await asyncio.sleep(backoff)
-            backoff *= 2
-            continue
+                await asyncio.sleep(backoff)
+                backoff *= 2
+                continue
 
         raise RuntimeError("API non disponibile dopo 3 tentativi")
 

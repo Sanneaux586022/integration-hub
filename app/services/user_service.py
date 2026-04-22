@@ -12,7 +12,6 @@ class userService:
 
     async def get_user_by_email(self, email: str):
         email_query =  await self.db.execute(select(User).filter(User.email == email))
-        print(email_query)
         return email_query.scalar_one_or_none()
     
 
